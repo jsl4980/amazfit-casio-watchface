@@ -25,36 +25,37 @@ REF = ROOT / "reference" / "ae1200-1.jpg"
 W, H = 390, 450
 RADIUS = 86  # Bip 6 screen corner radius
 
-# Black bezel + original lighter LCD green
+# Edge-to-edge black bezel; module green kept, wells brightened
 BEZEL_HI = (42, 42, 42, 255)
 BEZEL_MID = (18, 18, 18, 255)
 BEZEL_LO = (6, 6, 6, 255)
-LCD_BG = (52, 58, 52, 255)       # lighter olive module (previous)
-LCD_FACE = (72, 82, 68, 255)     # lighter wells (previous)
+LCD_BG = (52, 58, 52, 255)       # #343a34 module (unchanged)
+LCD_FACE = (122, 136, 112, 255)  # #7a8870 brighter wells
 SEG = (18, 24, 14, 255)
-SEG_GHOST = (40, 48, 36, 255)
+SEG_GHOST = (58, 68, 54, 255)    # #3a4436 — readable on bright wells
 CASE = (8, 8, 8, 255)
 
-# Geometry (absolute coords on 390x450)
-BEZEL = (18, 28, 354, 394)  # x,y,w,h — silver frame
-LCD = (40, 70, 310, 300)    # dark LCD inset
+# Geometry (absolute coords on 390x450) — near full-bleed
+BEZEL = (2, 2, 386, 446)
+LCD = (16, 16, 358, 418)
 
-DIAL_CX, DIAL_CY, DIAL_R = 105, 145, 52
-BAT_BOX = (248, 78, 88, 48)     # top-right indicator well
-HR_BOX = (210, 135, 126, 78)    # former map well
-BOTTOM = (48, 230, 294, 128)    # main timekeeping well
+DIAL_CX, DIAL_CY, DIAL_R = 100, 130, 64
+BAT_BOX = (268, 72, 96, 52)      # top-right indicator well
+HR_BOX = (230, 138, 134, 90)     # former map well
+BOTTOM = (36, 250, 318, 150)     # main timekeeping well
 
-WEEKDAY_POS = (70, 242)
-MONTH_POS = (175, 242)
-TIME_HOUR = (70, 280)
-TIME_MIN = (178, 280)
-COLON_POS = (158, 285)
-PM_POS = (290, 250)
+WEEKDAY_POS = (55, 265)
+MONTH_POS = (175, 265)
+TIME_HOUR = (55, 310)
+TIME_MIN = (175, 310)
+COLON_POS = (155, 315)
+PM_POS = (300, 270)
 
-STEP_VAL_POS = (78, 155)
-HR_VAL_POS = (218, 155)
+STEP_VAL_POS = (72, 148)
+HR_VAL_POS = (238, 168)
 # battery icon 72x28 centered in BAT_BOX
-BAT_VAL_POS = (248 + (88 - 72) // 2, 78 + (48 - 28) // 2)  # (256, 88)
+BAT_VAL_POS = (268 + (96 - 72) // 2, 72 + (52 - 28) // 2)  # (280, 84)
+PROGRESS_SIZE = 140
 
 
 def ensure_dirs() -> None:
@@ -158,7 +159,7 @@ def make_labels() -> None:
 
 
 def make_battery_frames() -> None:
-    """10 frames for battery level 0..100 via IMG_PROGRESS."""
+    """10 frames for battery level 0..100 via IMG_LEVEL."""
     for i in range(10):
         im = Image.new("RGBA", (72, 28), (0, 0, 0, 0))
         d = ImageDraw.Draw(im)
@@ -174,10 +175,10 @@ def make_battery_frames() -> None:
 
 
 def make_progress_frames() -> None:
-    size = 120
+    size = PROGRESS_SIZE
     cx = cy = size // 2
-    r = 48
-    width = 7
+    r = DIAL_R - 4
+    width = 8
     for i in range(10):
         im = Image.new("RGBA", (size, size), (0, 0, 0, 0))
         d = ImageDraw.Draw(im)
@@ -189,8 +190,9 @@ def make_progress_frames() -> None:
 
 
 def make_ui() -> None:
-    Image.new("RGBA", (120, 120), (0, 0, 0, 0)).save(OUT / "ui" / "tap_step.png")
-    Image.new("RGBA", (130, 90), (0, 0, 0, 0)).save(OUT / "ui" / "tap_hr.png")
+    Image.new("RGBA", (PROGRESS_SIZE, PROGRESS_SIZE), (0, 0, 0, 0)).save(OUT / "ui" / "tap_step.png")
+    hx, hy, hw, hh = HR_BOX
+    Image.new("RGBA", (hw, hh), (0, 0, 0, 0)).save(OUT / "ui" / "tap_hr.png")
     im = Image.new("RGBA", (18, 28), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     d.rectangle((2, 12, 7, 16), fill=SEG)
@@ -200,12 +202,12 @@ def make_ui() -> None:
 
 def black_bezel(draw: ImageDraw.ImageDraw, box) -> None:
     x, y, w, h = box
-    draw.rounded_rectangle((x, y, x + w, y + h), radius=18, fill=BEZEL_MID)
-    draw.rounded_rectangle((x + 3, y + 3, x + w - 3, y + h - 3), radius=16, fill=BEZEL_HI)
-    draw.rounded_rectangle((x + 8, y + 8, x + w - 8, y + h - 8), radius=14, fill=BEZEL_MID)
-    # inner recess for LCD (tighter — no room reserved for bezel text)
-    draw.rounded_rectangle((x + 12, y + 12, x + w - 12, y + h - 12), radius=6, fill=BEZEL_LO)
-    draw.rounded_rectangle((x + 14, y + 14, x + w - 14, y + h - 14), radius=5, fill=LCD_BG)
+    # Large radii for edge-to-edge bezel on Bip 6 screen
+    draw.rounded_rectangle((x, y, x + w, y + h), radius=84, fill=BEZEL_MID)
+    draw.rounded_rectangle((x + 3, y + 3, x + w - 3, y + h - 3), radius=82, fill=BEZEL_HI)
+    draw.rounded_rectangle((x + 8, y + 8, x + w - 8, y + h - 8), radius=78, fill=BEZEL_MID)
+    draw.rounded_rectangle((x + 12, y + 12, x + w - 12, y + h - 12), radius=74, fill=BEZEL_LO)
+    draw.rounded_rectangle((x + 14, y + 14, x + w - 14, y + h - 14), radius=72, fill=LCD_BG)
 
 
 def make_background() -> Image.Image:
@@ -216,17 +218,11 @@ def make_background() -> Image.Image:
     draw.rounded_rectangle((0, 0, W - 1, H - 1), radius=RADIUS, fill=CASE)
     draw.rounded_rectangle((2, 2, W - 3, H - 3), radius=RADIUS - 2, outline=(36, 36, 36, 255), width=2)
 
-    # faux side buttons (kept)
-    draw.rectangle((0, 108, 7, 140), fill=(55, 55, 55, 255))
-    draw.rectangle((0, 198, 7, 250), fill=(55, 55, 55, 255))
-    draw.rectangle((W - 7, 150, W - 1, 196), fill=(55, 55, 55, 255))
-
-    bx, by, bw, bh = BEZEL
     black_bezel(draw, BEZEL)
 
     # LCD wells
     lx, ly, lw, lh = LCD
-    draw.rounded_rectangle((lx, ly, lx + lw, ly + lh), radius=4, fill=LCD_BG)
+    draw.rounded_rectangle((lx, ly, lx + lw, ly + lh), radius=70, fill=LCD_BG)
 
     # top-left dial well (circular)
     draw.ellipse(
@@ -238,7 +234,7 @@ def make_background() -> Image.Image:
     # tick marks (AE-1200 analog-style dial)
     for i in range(60):
         ang = math.radians(i * 6 - 90)
-        inner = DIAL_R - (11 if i % 5 == 0 else 7)
+        inner = DIAL_R - (14 if i % 5 == 0 else 8)
         outer = DIAL_R - 1
         x1 = DIAL_CX + inner * math.cos(ang)
         y1 = DIAL_CY + inner * math.sin(ang)
@@ -248,15 +244,21 @@ def make_background() -> Image.Image:
 
     # top-right battery well
     bx0, by0, bw0, bh0 = BAT_BOX
-    draw.rectangle((bx0, by0, bx0 + bw0, by0 + bh0), fill=LCD_FACE, outline=SEG_GHOST, width=1)
+    draw.rounded_rectangle(
+        (bx0, by0, bx0 + bw0, by0 + bh0), radius=14, fill=LCD_FACE, outline=SEG_GHOST, width=1
+    )
 
     # map / HR well
     hx, hy, hw, hh = HR_BOX
-    draw.rectangle((hx, hy, hx + hw, hy + hh), fill=LCD_FACE, outline=SEG_GHOST, width=1)
+    draw.rounded_rectangle(
+        (hx, hy, hx + hw, hy + hh), radius=14, fill=LCD_FACE, outline=SEG_GHOST, width=1
+    )
 
     # bottom timekeeping well
     tx, ty, tw, th = BOTTOM
-    draw.rectangle((tx, ty, tx + tw, ty + th), fill=LCD_FACE, outline=SEG_GHOST, width=1)
+    draw.rounded_rectangle(
+        (tx, ty, tx + tw, ty + th), radius=16, fill=LCD_FACE, outline=SEG_GHOST, width=1
+    )
 
     # Printed glass labels
     font_tiny = try_font(8, True)
@@ -284,7 +286,7 @@ def make_preview(bg: Image.Image) -> None:
         if path.exists():
             preview.alpha_composite(Image.open(path).convert("RGBA"), dest=pos)
 
-    paste(OUT / "progress" / "6.png", (DIAL_CX - 60, DIAL_CY - 60))
+    paste(OUT / "progress" / "6.png", (DIAL_CX - PROGRESS_SIZE // 2, DIAL_CY - PROGRESS_SIZE // 2))
     for i, ch in enumerate("8432"):
         paste(OUT / "font" / "tiny" / f"{ch}.png", (STEP_VAL_POS[0] + i * 14, STEP_VAL_POS[1]))
     paste(OUT / "battery" / "8.png", BAT_VAL_POS)

@@ -11,9 +11,9 @@
       --bezel-hi: #2a2a2a;
       --bezel-lo: #050505;
       --lcd: #343a34;
-      --well: #485244;
+      --well: #7a8870;
       --seg: #12180e;
-      --ghost: #283024;
+      --ghost: #3a4436;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -32,107 +32,108 @@
       box-shadow: 0 0 0 2px #333, 0 20px 50px rgba(0,0,0,.65);
       position: relative; overflow: hidden;
     }
-    .btn { position: absolute; width: 8px; background: #373737; border-radius: 2px; }
-    .btn-l1 { left: 0; top: 108px; height: 32px; }
-    .btn-l2 { left: 0; top: 198px; height: 52px; }
-    .btn-r1 { right: 0; top: 150px; height: 46px; }
 
     .bezel {
-      position: absolute; left: 18px; top: 28px; width: 354px; height: 394px;
-      border-radius: 18px;
+      position: absolute; inset: 2px;
+      border-radius: 84px;
       background: linear-gradient(160deg, var(--bezel-hi), var(--bezel) 40%, var(--bezel-lo));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 6px 16px rgba(0,0,0,.5);
-      padding: 18px 14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+      padding: 14px;
     }
 
     .lcd {
       height: 100%;
       background: var(--lcd);
-      border-radius: 5px;
-      box-shadow: inset 0 0 0 2px #0a0a0a, inset 0 0 24px rgba(0,0,0,.5);
-      padding: 10px;
+      border-radius: 70px;
+      box-shadow: inset 0 0 0 2px #0a0a0a, inset 0 0 24px rgba(0,0,0,.35);
+      padding: 14px 12px 18px;
       color: var(--seg);
       font-family: "Courier New", monospace;
       font-weight: 700;
       display: grid;
-      grid-template-columns: 130px 1fr;
-      grid-template-rows: 56px 90px 1fr;
-      gap: 8px;
+      grid-template-columns: 150px 1fr;
+      grid-template-rows: 64px 108px 1fr;
+      gap: 10px;
     }
 
     .dial {
       grid-row: 1 / 3;
-      width: 120px; height: 120px; border-radius: 50%;
+      width: 140px; height: 140px; border-radius: 50%;
       background: var(--well);
       box-shadow: inset 0 0 0 2px var(--ghost);
       position: relative;
       display: grid; place-items: center;
-      margin-top: 4px;
+      margin-top: 6px;
+      justify-self: center;
     }
     .dial::before {
       content: "";
       position: absolute; inset: 8px; border-radius: 50%;
       background: repeating-conic-gradient(from -90deg, var(--seg) 0 1.2deg, transparent 1.2deg 6deg);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
-              mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 11px), #000 calc(100% - 10px));
+              mask: radial-gradient(farthest-side, transparent calc(100% - 11px), #000 calc(100% - 10px));
     }
     .dial-progress {
       position: absolute; inset: 0; border-radius: 50%;
       background: conic-gradient(from -90deg, var(--seg) 0 62%, transparent 62%);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
-              mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+              mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
     }
     .dial-inner { position: relative; z-index: 1; text-align: center; }
-    .dial-inner .lab { font-size: 10px; letter-spacing: .14em; }
-    .dial-inner .val { font-size: 16px; margin-top: 4px; letter-spacing: .04em; }
+    .dial-inner .lab { font-size: 11px; letter-spacing: .14em; }
+    .dial-inner .val { font-size: 18px; margin-top: 4px; letter-spacing: .04em; }
 
     .bat {
       background: var(--well); border: 1px solid var(--ghost);
-      padding: 6px 8px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
     }
-    .bat .lab { font-size: 10px; letter-spacing: .14em; }
+    .bat .lab { font-size: 11px; letter-spacing: .14em; }
     .bat-bar {
-      height: 16px; border: 2px solid var(--seg); position: relative; width: 58px;
+      height: 18px; border: 2px solid var(--seg); position: relative; width: 68px;
     }
     .bat-bar::after {
-      content: ""; position: absolute; right: -6px; top: 3px; width: 4px; height: 6px; background: var(--seg);
+      content: ""; position: absolute; right: -6px; top: 4px; width: 4px; height: 6px; background: var(--seg);
     }
     .bat-bar .fill { height: 100%; width: 78%; background: var(--seg); }
 
     .hr {
       grid-column: 2; grid-row: 2;
       background: var(--well); border: 1px solid var(--ghost);
-      padding: 6px 8px;
+      border-radius: 14px;
+      padding: 8px 10px;
       display: flex; flex-direction: column;
+      position: relative;
     }
-    .hr .lab { font-size: 10px; letter-spacing: .14em; }
-    .hr .val { font-size: 40px; line-height: 1; text-align: center; margin-top: 6px; letter-spacing: .02em; }
+    .hr .lab { font-size: 11px; letter-spacing: .14em; }
+    .hr .val { font-size: 48px; line-height: 1; text-align: center; margin-top: 8px; letter-spacing: .02em; }
 
     .bottom {
       grid-column: 1 / -1;
       background: var(--well); border: 1px solid var(--ghost);
-      padding: 10px 12px 8px;
+      border-radius: 16px;
+      padding: 14px 16px 12px;
       position: relative;
     }
     .day-date {
-      display: flex; justify-content: flex-start; gap: 28px;
-      font-size: 24px; letter-spacing: .06em; margin-bottom: 4px;
+      display: flex; justify-content: flex-start; gap: 32px;
+      font-size: 28px; letter-spacing: .06em; margin-bottom: 6px;
     }
     .time {
       display: flex; align-items: flex-end; gap: 2px;
-      font-size: 56px; line-height: .92; letter-spacing: .02em;
+      font-size: 68px; line-height: .92; letter-spacing: .02em;
     }
     .time .colon { animation: blink 1s steps(1) infinite; }
-    .pm { font-size: 12px; margin: 0 0 18px 10px; letter-spacing: .1em; }
+    .pm { font-size: 14px; margin: 0 0 22px 12px; letter-spacing: .1em; }
     .glass-lab {
-      position: absolute; font-size: 8px; letter-spacing: .1em; color: var(--seg);
+      position: absolute; font-size: 9px; letter-spacing: .1em; color: var(--seg);
     }
-    .wr { left: 12px; top: -14px; }
-    .casio-mark { right: 8px; top: 40%; }
+    .wr { left: 14px; top: -16px; }
+    .casio-mark { right: 10px; top: 42%; }
     .battery-mark {
-      position: absolute; left: 0; right: 0; bottom: -18px;
-      text-align: center; font-size: 8px; letter-spacing: .14em; color: var(--seg);
+      position: absolute; left: 0; right: 0; bottom: -20px;
+      text-align: center; font-size: 9px; letter-spacing: .14em; color: var(--seg);
     }
     @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:.25} }
     .hint { margin-top: 14px; max-width: 390px; font-size: 12px; line-height: 1.45; opacity: .65; text-align: center; }
@@ -140,11 +141,8 @@
 </head>
 <body>
   <div>
-    <p class="meta">AE-1200WHD-1AV style · 390×450 · black bezel + light LCD</p>
+    <p class="meta">AE-1200WHD-1AV style · 390×450 · edge-to-edge · brighter wells</p>
     <div class="watch">
-      <div class="btn btn-l1"></div>
-      <div class="btn btn-l2"></div>
-      <div class="btn btn-r1"></div>
       <div class="bezel">
         <div class="lcd">
           <div class="dial">
