@@ -1,0 +1,36 @@
+# Dependencies / local tooling
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Zeus / Zepp build output
+dist/
+*.zab
+*.zpk
+.zeus/
+.zepp/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# Logs / env / temp
+*.log
+.env
+.env.*
+!.env.example
+tmp/
+temp/
+*.tmp

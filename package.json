@@ -1,0 +1,15 @@
+{
+  "name": "ae1200-digital",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Casio AE-1200WHD-1AV style Amazfit Bip 6 watchface (Zepp OS 2.0)",
+  "scripts": {
+    "assets": "python3 scripts/generate_ae1200_assets.py",
+    "dev": "zeus dev",
+    "preview": "zeus preview",
+    "build": "zeus build"
+  },
+  "devDependencies": {
+    "@zeppos/zeus-cli": "^1.9.3"
+  }
+}

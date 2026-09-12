@@ -1,0 +1,60 @@
+{
+  "configVersion": "v2",
+  "app": {
+    "appId": 21476,
+    "appName": "AE1200 Digital",
+    "appType": "watchface",
+    "version": {
+      "code": 10,
+      "name": "2.0.1"
+    },
+    "icon": "icon.png",
+    "vender": "zepp",
+    "description": "Casio AE-1200WHD-1AV style face for Amazfit Bip 6"
+  },
+  "permissions": [
+    "data:user.hr",
+    "data:user.step"
+  ],
+  "runtime": {
+    "apiVersion": {
+      "compatible": "1.0.0",
+      "target": "1.0.1",
+      "minVersion": "1.0.0"
+    }
+  },
+  "targets": {
+    "390x450-amazfit-bip-6": {
+      "module": {
+        "watchface": {
+          "path": "watchface/index",
+          "main": 1,
+          "editable": 0,
+          "lockscreen": 0,
+          "hightCost": 0
+        }
+      },
+      "platforms": [
+        {
+          "name": "Pamir",
+          "deviceSource": 9765120
+        },
+        {
+          "name": "PamirW",
+          "deviceSource": 9765121
+        },
+        {
+          "name": "PamirW64",
+          "deviceSource": 10158337
+        }
+      ],
+      "designWidth": 390
+    }
+  },
+  "i18n": {
+    "en-US": {
+      "appName": "AE1200 Digital"
+    }
+  },
+  "defaultLanguage": "en-US"
+}
