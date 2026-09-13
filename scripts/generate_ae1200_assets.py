@@ -51,7 +51,8 @@ TIME_MIN = (175, 310)
 COLON_POS = (155, 315)
 PM_POS = (300, 270)
 
-STEP_VAL_POS = (72, 148)
+# Step count centered in dial (small digits 18×28; sample "8432" → 4×18+3)
+STEP_VAL_POS = (100 - (4 * 18 + 3) // 2, 130 - 28 // 2)  # (62, 116)
 HR_VAL_POS = (238, 168)
 # battery icon 72x28 centered in BAT_BOX
 BAT_VAL_POS = (268 + (96 - 72) // 2, 72 + (52 - 28) // 2)  # (280, 84)
@@ -266,9 +267,8 @@ def make_background() -> Image.Image:
     draw.text((lx + lw - 70, hy + hh // 2 - 4), "CASIO", font=font_tiny, fill=SEG)
     draw.text((tx + 70, ty + th + 4), "10 YEAR BATTERY", font=font_tiny, fill=SEG)
 
-    # Section captions
+    # Section captions (STEP omitted so the count can sit centered in the dial)
     font_lab = try_font(9, True)
-    draw.text((DIAL_CX - 18, DIAL_CY - 18), "STEP", font=font_lab, fill=SEG)
     draw.text((hx + 6, hy + 4), "HR", font=font_lab, fill=SEG)
     # BAT label centered in battery well
     bat_lab = "BAT"
@@ -288,7 +288,7 @@ def make_preview(bg: Image.Image) -> None:
 
     paste(OUT / "progress" / "6.png", (DIAL_CX - PROGRESS_SIZE // 2, DIAL_CY - PROGRESS_SIZE // 2))
     for i, ch in enumerate("8432"):
-        paste(OUT / "font" / "tiny" / f"{ch}.png", (STEP_VAL_POS[0] + i * 14, STEP_VAL_POS[1]))
+        paste(OUT / "font" / "small" / f"{ch}.png", (STEP_VAL_POS[0] + i * 19, STEP_VAL_POS[1]))
     paste(OUT / "battery" / "8.png", BAT_VAL_POS)
     for i, ch in enumerate("072"):
         paste(OUT / "font" / "large" / f"{ch}.png", (HR_VAL_POS[0] + i * 34, HR_VAL_POS[1]))

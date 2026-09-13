@@ -19,11 +19,6 @@ const SMALL = [
   'font/small/5.png', 'font/small/6.png', 'font/small/7.png', 'font/small/8.png', 'font/small/9.png'
 ]
 
-const TINY = [
-  'font/tiny/0.png', 'font/tiny/1.png', 'font/tiny/2.png', 'font/tiny/3.png', 'font/tiny/4.png',
-  'font/tiny/5.png', 'font/tiny/6.png', 'font/tiny/7.png', 'font/tiny/8.png', 'font/tiny/9.png'
-]
-
 const WEEK = [
   'week/mon.png', 'week/tue.png', 'week/wed.png', 'week/thu.png',
   'week/fri.png', 'week/sat.png', 'week/sun.png'
@@ -62,9 +57,10 @@ WatchFace({
       show_level: hmUI.show_level.ONLY_NORMAL
     })
 
+    // Centered in dial (100,130); w fits 5 small digits
     hmUI.createWidget(hmUI.widget.TEXT_IMG, {
-      x: 65, y: 148, w: 70, h: 20,
-      font_array: TINY,
+      x: 45, y: 116, w: 110, h: 28,
+      font_array: SMALL,
       invalid_image: 'font/invalid.png',
       h_space: 1,
       align_h: hmUI.align.CENTER_H,
