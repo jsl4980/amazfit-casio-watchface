@@ -46,20 +46,20 @@ WatchFace({
       show_level: hmUI.show_level.ONLY_NORMAL
     })
 
-    // Dial center (100,130) r=64 → progress 140×140 @ (30,60)
+    // Dial center (106,122) r=84 → progress 176×176 @ (18,34)
     // Full-ring frames need IMG_LEVEL (IMG_PROGRESS stacks segments via x/y arrays)
     hmUI.createWidget(hmUI.widget.IMG_LEVEL, {
-      x: 30, y: 60,
-      w: 140, h: 140,
+      x: 18, y: 34,
+      w: 176, h: 176,
       image_array: STEP_PROGRESS,
       image_length: 10,
       type: hmUI.data_type.STEP,
       show_level: hmUI.show_level.ONLY_NORMAL
     })
 
-    // Centered in dial (100,130); w fits 5 small digits
+    // Centered in dial (106,122); w fits 5 small digits
     hmUI.createWidget(hmUI.widget.TEXT_IMG, {
-      x: 45, y: 116, w: 110, h: 28,
+      x: 51, y: 108, w: 110, h: 28,
       font_array: SMALL,
       invalid_image: 'font/invalid.png',
       h_space: 1,
@@ -68,10 +68,10 @@ WatchFace({
       show_level: hmUI.show_level.ONLY_NORMAL
     })
 
-    // Battery centered in BAT well (72×28 inside 96×52 @ 268,72)
+    // Battery centered in BAT well (116×28 inside 156×56 @ 206,46)
     hmUI.createWidget(hmUI.widget.IMG_LEVEL, {
-      x: 280, y: 84,
-      w: 72, h: 28,
+      x: 226, y: 64,
+      w: 116, h: 28,
       image_array: BATTERY_PROGRESS,
       image_length: 10,
       type: hmUI.data_type.BATTERY,
@@ -79,7 +79,7 @@ WatchFace({
     })
 
     hmUI.createWidget(hmUI.widget.TEXT_IMG, {
-      x: 238, y: 168, w: 118, h: 60,
+      x: 218, y: 142, w: 132, h: 60,
       font_array: LARGE,
       invalid_image: 'font/invalid.png',
       h_space: 2,
@@ -89,14 +89,14 @@ WatchFace({
     })
 
     hmUI.createWidget(hmUI.widget.IMG_WEEK, {
-      x: 55, y: 265,
+      x: 48, y: 252,
       week_en: WEEK, week_tc: WEEK, week_sc: WEEK,
       show_level: hmUI.show_level.ONLY_NORMAL
     })
 
     hmUI.createWidget(hmUI.widget.IMG_DATE, {
-      month_startX: 175,
-      month_startY: 265,
+      month_startX: 170,
+      month_startY: 252,
       month_space: 1,
       month_zero: 0,
       month_en_array: SMALL,
@@ -115,27 +115,27 @@ WatchFace({
     })
 
     hmUI.createWidget(hmUI.widget.IMG, {
-      x: 155, y: 315,
+      x: 150, y: 305,
       src: 'font/colon.png',
       show_level: hmUI.show_level.ONLY_NORMAL
     })
 
     hmUI.createWidget(hmUI.widget.IMG_TIME, {
       hour_zero: 1,
-      hour_startX: 55,
-      hour_startY: 310,
+      hour_startX: 48,
+      hour_startY: 300,
       hour_space: 2,
       hour_array: LARGE,
       minute_zero: 1,
-      minute_startX: 175,
-      minute_startY: 310,
+      minute_startX: 170,
+      minute_startY: 300,
       minute_space: 2,
       minute_array: LARGE,
-      am_x: 300, am_y: 270,
+      am_x: 310, am_y: 258,
       am_sc_path: 'ampm/am.png',
       am_tc_path: 'ampm/am.png',
       am_en_path: 'ampm/am.png',
-      pm_x: 300, pm_y: 270,
+      pm_x: 310, pm_y: 258,
       pm_sc_path: 'ampm/pm.png',
       pm_tc_path: 'ampm/pm.png',
       pm_en_path: 'ampm/pm.png',
@@ -143,7 +143,7 @@ WatchFace({
     })
 
     hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: 30, y: 60, w: 140, h: 140,
+      x: 18, y: 34, w: 176, h: 176,
       normal_src: 'ui/tap_step.png',
       press_src: 'ui/tap_step.png',
       click_func: () => {
@@ -152,7 +152,7 @@ WatchFace({
     })
 
     hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: 230, y: 138, w: 134, h: 90,
+      x: 206, y: 114, w: 156, h: 102,
       normal_src: 'ui/tap_hr.png',
       press_src: 'ui/tap_hr.png',
       click_func: () => {

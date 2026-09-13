@@ -35,28 +35,35 @@ SEG = (18, 24, 14, 255)
 SEG_GHOST = (58, 68, 54, 255)    # #3a4436 — readable on bright wells
 CASE = (8, 8, 8, 255)
 
-# Geometry (absolute coords on 390x450) — near full-bleed
+# Geometry (absolute coords on 390x450) — match prototype grid:
+# left dial | right column (BAT + HR same width) | full-width bottom
 BEZEL = (2, 2, 386, 446)
 LCD = (16, 16, 358, 418)
 
-DIAL_CX, DIAL_CY, DIAL_R = 100, 130, 64
-BAT_BOX = (268, 72, 96, 52)      # top-right indicator well
-HR_BOX = (230, 138, 134, 90)     # former map well
-BOTTOM = (36, 250, 318, 150)     # main timekeeping well
+DIAL_CX, DIAL_CY, DIAL_R = 106, 122, 84  # larger step wheel (~168px face)
+# Right column shared width (HTML grid: both wells same 1fr column)
+BAT_BOX = (206, 46, 156, 56)
+HR_BOX = (206, 114, 156, 102)
+BOTTOM = (28, 236, 334, 168)  # main timekeeping well
 
-WEEKDAY_POS = (55, 265)
-MONTH_POS = (175, 265)
-TIME_HOUR = (55, 310)
-TIME_MIN = (175, 310)
-COLON_POS = (155, 315)
-PM_POS = (300, 270)
+WEEKDAY_POS = (48, 252)
+MONTH_POS = (170, 252)
+TIME_HOUR = (48, 300)
+TIME_MIN = (170, 300)
+COLON_POS = (150, 305)
+PM_POS = (310, 258)
 
 # Step count centered in dial (small digits 18×28; sample "8432" → 4×18+3)
-STEP_VAL_POS = (100 - (4 * 18 + 3) // 2, 130 - 28 // 2)  # (62, 116)
-HR_VAL_POS = (238, 168)
-# battery icon 72x28 centered in BAT_BOX
-BAT_VAL_POS = (268 + (96 - 72) // 2, 72 + (52 - 28) // 2)  # (280, 84)
-PROGRESS_SIZE = 140
+STEP_VAL_POS = (DIAL_CX - (4 * 18 + 3) // 2, DIAL_CY - 28 // 2)
+# large digits in HR well
+HR_VAL_POS = (HR_BOX[0] + (HR_BOX[2] - 3 * 34) // 2, HR_BOX[1] + 28)
+# battery icon centered in BAT_BOX
+BAT_ICON_W, BAT_ICON_H = 116, 28
+BAT_VAL_POS = (
+    BAT_BOX[0] + (BAT_BOX[2] - BAT_ICON_W) // 2,
+    BAT_BOX[1] + (BAT_BOX[3] - BAT_ICON_H) // 2 + 4,  # sit under BAT label
+)
+PROGRESS_SIZE = 176
 
 
 def ensure_dirs() -> None:
@@ -162,14 +169,16 @@ def make_labels() -> None:
 def make_battery_frames() -> None:
     """10 frames for battery level 0..100 via IMG_LEVEL."""
     for i in range(10):
-        im = Image.new("RGBA", (72, 28), (0, 0, 0, 0))
+        im = Image.new("RGBA", (BAT_ICON_W, BAT_ICON_H), (0, 0, 0, 0))
         d = ImageDraw.Draw(im)
-        # body
-        d.rectangle((2, 6, 62, 24), outline=SEG, width=2)
+        # body — scaled to wider BAT well (same width as HR)
+        body_r = BAT_ICON_W - 10
+        d.rectangle((2, 6, body_r, 24), outline=SEG, width=2)
         # nub
-        d.rectangle((62, 10, 68, 20), fill=SEG)
+        d.rectangle((body_r, 10, BAT_ICON_W - 2, 20), fill=SEG)
         # fill
-        fill_w = int(52 * i / 9) if i > 0 else 0
+        fill_max = body_r - 10
+        fill_w = int(fill_max * i / 9) if i > 0 else 0
         if fill_w > 0:
             d.rectangle((6, 10, 6 + fill_w, 20), fill=SEG)
         im.save(OUT / "battery" / f"{i}.png")
@@ -264,8 +273,8 @@ def make_background() -> Image.Image:
     # Printed glass labels
     font_tiny = try_font(8, True)
     draw.text((lx + 8, ty - 14), "WR100M", font=font_tiny, fill=SEG)
-    draw.text((lx + lw - 70, hy + hh // 2 - 4), "CASIO", font=font_tiny, fill=SEG)
-    draw.text((tx + 70, ty + th + 4), "10 YEAR BATTERY", font=font_tiny, fill=SEG)
+    draw.text((hx + hw - 48, hy + 8), "CASIO", font=font_tiny, fill=SEG)
+    draw.text((tx + 90, ty + th + 4), "10 YEAR BATTERY", font=font_tiny, fill=SEG)
 
     # Section captions (STEP omitted so the count can sit centered in the dial)
     font_lab = try_font(9, True)
